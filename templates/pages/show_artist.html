@@ -1,8 +1,10 @@
 {% extends 'layouts/main.html' %}
-{% block title %}{{ artist.name }} | Artist{% endblock %}
+{% block title %}
+{{ artist.name }} | Artist{% endblock %}
 {% block content %}
 <div class="row">
 	<div class="col-sm-6">
+		<h3><a href="/artists/{{ artist.id }}/edit">Edit</a></h1>
 		<h1 class="monospace">
 			{{ artist.name }}
 		</h1>
@@ -10,9 +12,9 @@
 			ID: {{ artist.id }}
 		</p>
 		<div class="genres">
-			{% for genre in artist.genres %}
-			<span class="genre">{{ genre }}</span>
-			{% endfor %}
+			
+			<span class="genre">{{ artist.genres }}</span>
+			
 		</div>
 		<p>
 			<i class="fas fa-globe-americas"></i> {{ artist.city }}, {{ artist.state }}
@@ -40,7 +42,7 @@
 		{% endif %}
 	</div>
 	<div class="col-sm-6">
-		<img src="{{ artist.image_link }}" alt="Venue Image" />
+		<img src="{{ artist.image_link }}" alt="Artist Image" />
 	</div>
 </div>
 <section>

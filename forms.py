@@ -85,6 +85,9 @@ class VenueForm(Form):
     phone = StringField(
         'phone'
     )
+    website = StringField(
+        'website'
+    )
     image_link = StringField(
         'image_link'
     )
@@ -183,9 +186,12 @@ class ArtistForm(Form):
     phone = StringField(
         # TODO implement validation logic for state
         'phone'
-    )
-    image_link = StringField(
+    )  
+    image_link  = StringField(
         'image_link'
+    )
+    website = StringField(
+        'website'
     )
     genres = SelectMultipleField(
         # TODO implement enum restriction

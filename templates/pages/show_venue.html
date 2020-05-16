@@ -1,8 +1,11 @@
 {% extends 'layouts/main.html' %}
 {% block title %}Venue Search{% endblock %}
 {% block content %}
+{% for area in venuelocation %}
+{% for venue in area %}
 <div class="row">
 	<div class="col-sm-6">
+		<h3><a href="/venues/{{ venue.id }}/edit">Edit</a></h1>
 		<h1 class="monospace">
 			{{ venue.name }}
 		</h1>
@@ -74,6 +77,7 @@
 		{% endfor %}
 	</div>
 </section>
-
+{% endfor %}
+{% endfor %}
 {% endblock %}
 
