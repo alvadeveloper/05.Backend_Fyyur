@@ -1,8 +1,6 @@
 {% extends 'layouts/main.html' %}
 {% block title %}Venue Search{% endblock %}
 {% block content %}
-{% for area in venuelocation %}
-{% for venue in area %}
 <div class="row">
 	<div class="col-sm-6">
 		<h3><a href="/venues/{{ venue.id }}/edit">Edit</a></h1>
@@ -13,9 +11,9 @@
 			ID: {{ venue.id }}
 		</p>
 		<div class="genres">
-			{% for genre in venue.genres %}
-			<span class="genre">{{ genre }}</span>
-			{% endfor %}
+			
+			<span class="genre">{{ venue.genres }}</span>
+			
 		</div>
 		<p>
 			<i class="fas fa-globe-americas"></i> {{ venue.city }}, {{ venue.state }}
@@ -50,34 +48,34 @@
 	</div>
 </div>
 <section>
-	<h2 class="monospace">{{ venue.upcoming_shows_count }} Upcoming {% if venue.upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ comingshows }} Upcoming {% if comingshows == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{%for show in venue.upcoming_shows %}
+		{%for sa in showsafter %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
-				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
-				<h6>{{ show.start_time|datetime('full') }}</h6>
+				<img src="{{ sa.Artist.image_link }}" alt="Show Artist Image" />
+				<h5><a href="/artists/{{ sa.Artist.id }}">{{ sa.Artist.name }}</a></h5>
+				<h6>{{ sa.Shows.start_time }}</h6>
 			</div>
 		</div>
 		{% endfor %}
 	</div>
 </section>
 <section>
-	<h2 class="monospace">{{ venue.past_shows_count }} Past {% if venue.past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ pastshows }} Past {% if pastshows == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{%for show in venue.past_shows %}
+		{%for sf in showsbefore %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
-				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
-				<h6>{{ show.start_time|datetime('full') }}</h6>
+				<img src="{{ sf.Artist.image_link }}" alt="Show Artist Image" />
+				<h5><a href="/artists/{{ sf.Artist.id }}">{{ sf.Artist.name }}</a></h5>
+				<h6>{{ sf.Shows.start_time }}</h6>
 			</div>
 		</div>
 		{% endfor %}
 	</div>
+
 </section>
-{% endfor %}
-{% endfor %}
+
 {% endblock %}
 

@@ -28,46 +28,49 @@
 		<p>
 			<i class="fab fa-facebook-f"></i> {% if artist.facebook_link %}<a href="{{ artist.facebook_link }}" target="_blank">{{ artist.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
         </p>
-		{% if artist.seeking_venue %}
+		{% if comingshows >= 1 %}
+		{%for sa in showsafter %}
 		<div class="seeking">
 			<p class="lead">Currently seeking performance venues</p>
 			<div class="description">
-				<i class="fas fa-quote-left"></i> {{ artist.seeking_description }} <i class="fas fa-quote-right"></i>
+				<i class="fas fa-quote-left"></i> {{ sa.Venue.name }} <i class="fas fa-quote-right"></i>
 			</div>
 		</div>
 		{% else %}	
 		<p class="not-seeking">
 			<i class="fas fa-moon"></i> Not currently seeking performance venues
 		</p>
+		{% endfor %}
 		{% endif %}
+		
 	</div>
 	<div class="col-sm-6">
 		<img src="{{ artist.image_link }}" alt="Artist Image" />
 	</div>
 </div>
 <section>
-	<h2 class="monospace">{{ artist.upcoming_shows_count }} Upcoming {% if artist.upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ comingshows }} Upcoming {% if comingshows == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{%for show in artist.upcoming_shows %}
+		{%for sa in showsafter %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.venue_image_link }}" alt="Show Venue Image" />
-				<h5><a href="/venues/{{ show.venue_id }}">{{ show.venue_name }}</a></h5>
-				<h6>{{ show.start_time|datetime('full') }}</h6>
+				<img src="{{ sa.Venue.image_link }}" alt="Show Venue Image" />
+				<h5><a href="/venues/{{ sa.Venue.id }}">{{ sa.Venue.name }}</a></h5>
+				<h6>{{ sa.Shows.start_time }}</h6>
 			</div>
 		</div>
 		{% endfor %}
 	</div>
 </section>
 <section>
-	<h2 class="monospace">{{ artist.past_shows_count }} Past {% if artist.past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ pastshows }} Past {% if pastshows == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{%for show in artist.past_shows %}
+		{%for sf in showsbefore %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.venue_image_link }}" alt="Show Venue Image" />
-				<h5><a href="/venues/{{ show.venue_id }}">{{ show.venue_name }}</a></h5>
-				<h6>{{ show.start_time|datetime('full') }}</h6>
+				<img src="{{ sf.Venue.image_link }}" alt="Show Venue Image" />
+				<h5><a href="/venues/{{ sf.Venue.id }}">{{ sf.Venue.name }}</a></h5>
+				<h6>{{ sf.Shows.start_time }}</h6>
 			</div>
 		</div>
 		{% endfor %}

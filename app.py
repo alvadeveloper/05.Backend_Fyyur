@@ -13,6 +13,7 @@ from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
 from flask_migrate import Migrate
+from datetime import date
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -24,6 +25,10 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+#-------------------------------------------------------#
+#Global Variables.
+today = str(date.today())
+#-------------------------------------------------------#
 
 # TODO: connect to a local postgresql database
 
@@ -71,6 +76,7 @@ class Venue(db.Model):
     state = db.Column(db.String(120))
     address = db.Column(db.String(120))
     phone = db.Column(db.String(120))
+    genres = db.Column(db.String(120))
     image_link = db.Column(db.String(500))
     website = db.Column(db.String(500))
     facebook_link = db.Column(db.String(500))
@@ -138,8 +144,22 @@ def search_venues():
 
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
-  venuelocation = Venue.query.all(),
-  return render_template('pages/show_venue.html', venuelocation=venuelocation)
+  venueall=Venue.query.filter_by(id=venue_id).all()
+  venue = venueall[0]
+
+  showsbefore = db.session.query(Artist, Venue, Shows)\
+                    .join(Artist, Artist.id == Shows.artist_id)\
+                    .join(Venue, Venue.id == Shows.venue_id).filter(Shows.start_time <= today).filter(Venue.id == venue_id)
+
+  showsafter = db.session.query(Artist, Venue, Shows)\
+                    .join(Artist, Artist.id == Shows.artist_id)\
+                    .join(Venue, Venue.id == Shows.venue_id).filter(Shows.start_time >= today).filter(Venue.id == venue_id)
+
+
+  comingshows = showsafter.count()
+  pastshows = showsbefore.count()
+
+  return render_template('pages/show_venue.html', venue=venue, showsbefore=showsbefore, showsafter=showsafter, comingshows=comingshows, pastshows=pastshows)
 
 #  Create Venue
 #  ----------------------------------------------------------------
@@ -162,16 +182,12 @@ def create_venue_submission():
   genres = form.genres.data
   facebook_link = form.facebook_link.data
 
-  try:
-        venue = Venue(name=name, city=city, state=state, address=address, phone=phone, website=website, genres=genres, image_link=image_link, facebook_link=facebook_link)
-        db.session.add(venue)
-        db.session.commit()
-  except:
-        db.session.rollback()
-  finally:
-        db.session.close()
 
-  return render_template('pages/home.html', venue=venue)
+  venue = Venue(name=name, city=city, state=state, address=address, phone=phone, website=website, genres=genres, image_link=image_link, facebook_link=facebook_link)
+  db.session.add(venue)
+  db.session.commit()
+
+  return render_template('pages/home.html')
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
 def delete_venue(venue_id):
@@ -209,7 +225,21 @@ def search_artists():
 def show_artist(artist_id):
   artistall=Artist.query.filter_by(id=artist_id).all()
   artist = artistall[0]
-  return render_template('pages/show_artist.html', artist=artist)
+
+  showsbefore = db.session.query(Artist, Venue, Shows)\
+                    .join(Artist, Artist.id == Shows.artist_id)\
+                    .join(Venue, Venue.id == Shows.venue_id).filter(Shows.start_time <= today).filter(Artist.id == artist_id)
+
+  showsafter = db.session.query(Artist, Venue, Shows)\
+                    .join(Artist, Artist.id == Shows.artist_id)\
+                    .join(Venue, Venue.id == Shows.venue_id).filter(Shows.start_time >= today).filter(Artist.id == artist_id)
+
+
+  comingshows = showsafter.count()
+  pastshows = showsbefore.count()
+  
+
+  return render_template('pages/show_artist.html', artist=artist, showsafter=showsafter, showsbefore=showsbefore, comingshows=comingshows, pastshows=pastshows)
 
 #  Update
 #  ----------------------------------------------------------------
@@ -327,7 +357,10 @@ def create_artist_submission():
 
 @app.route('/shows')
 def shows():
-  shows = db.session.query(Shows).all();
+  shows = db.session.query(Artist, Venue, Shows)\
+                    .join(Artist, Artist.id == Shows.artist_id)\
+                    .join(Venue, Venue.id == Shows.venue_id).all();
+
   return render_template('pages/shows.html', shows=shows)
 
 @app.route('/shows/create')
