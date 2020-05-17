@@ -100,24 +100,6 @@ Acceptance Criteria
   * The relationship between the models should be accurately configured, and referential integrity amongst the models should be preserved.
   * `flask db migrate` should work, and populate my local postgres database with properly configured tables for this application's objects, including proper columns, column data types, constraints, defaults, and relationships that completely satisfy the needs of this application. The proper type of relationship between venues, artists, and shows should be configured.
 
-  驗收標準
------
-
-1.該Web應用程序應已成功連接到PostgreSQL數據庫。與本地計算機上數據庫的本地連接很好。
-2.在整個應用程序中均不應使用模擬數據。當實際數據滿足要求時，應保持每個控制器的模擬數據的數據結構不變。
-3.應用程序應具有與模擬數據相同的行為，但現在使用具有真實搜索功能的真實後端服務器中的真實數據。例如：
-  *當用戶提交新的藝術家記錄時，該用戶應該能夠看到它填充在/ artists中，以及按名稱搜索該藝術家並獲得搜索返回結果。
-  *我應該能夠轉到URL`/ artist / <artist-id>`，使用每個藝術家的唯一ID訪問特定藝術家的頁面，並查看有關該特定藝術家的真實數據。
-  *地點應繼續按城市和州分組顯示。
-  *搜索應允許部分字符串匹配且不區分大小寫。
-  *過去的演出與即將舉行的演出應在“場地”和“藝術家”頁面中進行區分。
-  *用戶應該能夠在“藝術家”頁面上單擊即將舉行的演出的場地，並且在該“場地”頁面上，可以在“場地頁面”的即將舉行的表演部分中看到同一場表演。
-4.作為該應用程序的開發人員，我應該能夠運行“ flask db migration”，並用正確的表填充本地數據庫（一旦設置並創建），以運行該應用程序並使它與我的應用程序交互本地postgres服務器，可以用真實的數據完全滿足應用程序的需求，我可以在其中植入本地數據庫。
-  *必須完成模型（請參閱app.py的“模型”部分中的TODO），並為整個Fyyur中使用的對象建模。
-  *應該正確地確定模型之間正確的關係類型和父子動力學，並適合此特定應用程序的需求。
-  *應正確配置模型之間的關係，並應保留模型之間的參照完整性。
-  *“ flask db migration”應該可以工作，並使用針對此應用程序對象的正確配置的表填充我的本地postgres數據庫，包括適當的列，列數據類型，約束，默認值和完全滿足該應用程序需求的關係。場地，藝術家和表演之間的適當關係類型應該配置。
-
 ##### Stand Out
 
 Looking to go above and beyond? This is the right section for you! Here are some challenges to make your submission stand out:

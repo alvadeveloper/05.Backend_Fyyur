@@ -223,4 +223,14 @@ class ArtistForm(Form):
         'facebook_link', validators=[URL()]
     )
 
+
+# class SearchArtist(Form):
+#     artist_name = StringField(
+#         'artist_name')
+
+# class SearchVenue(Form):
+#     venue_name = StringField(
+#         'venue_name')
+
+
 # TODO IMPLEMENT NEW ARTIST FORM AND NEW SHOW FORM
